@@ -23,14 +23,7 @@ const createAndSavePerson = (done) => {
     ]
   });
 
-  person.save((err, data) => {
-    if (err) {
-      console.error(err);
-      done(err);
-    }
-
-    done(null, data);
-  })
+  person.save(done);
 };
 
 const createManyPeople = (arrayOfPeople, done) => {
@@ -52,7 +45,15 @@ const findPersonById = (personId, done) => {
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
 
-  done(null /*, data*/);
+  const personToEdit = Person.findById(personId, (err, data) => {
+    if (err) {
+      done(err);
+    }
+
+    data.favoriteFoods.push(foodToAdd);
+
+    data.save(done);
+  });
 };
 
 const findAndUpdate = (personName, done) => {
